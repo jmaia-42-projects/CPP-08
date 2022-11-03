@@ -7,7 +7,7 @@ SRCS		=	\
 _OBJS		=	${SRCS:.cpp=.o}
 OBJS		=	$(addprefix build/, $(_OBJS))
 
-CC			=	clang++
+CC			=	c++
 CFLAGS		=	-Wall -Werror -Wextra -std=c++98 -g3
 INCLUDE		=	-I includes/
 LIBS		=
