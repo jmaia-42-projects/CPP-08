@@ -6,12 +6,13 @@
 /*   By: jmaia <jmaia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 13:59:43 by jmaia             #+#    #+#             */
-/*   Updated: 2022/06/09 15:54:13 by jmaia            ###   ########.fr       */
+/*   Updated: 2022/11/03 17:19:19 by jmaia            ###   ###               */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Span.hpp"
 
+#include <algorithm>
 #include <cstdlib>
 
 Span::Span(void) { }
@@ -46,33 +47,19 @@ unsigned int	Span::shortestSpan(void)
 
 	if (this->vec.size() < 2)
 		throw std::range_error("There is not enough elements to calculate span");
-	for (std::vector<int>::iterator it = this->vec.begin(); it != this->vec.end(); it++)
+	sort(this->vec.begin(), this->vec.end());
+	for (std::vector<int>::iterator it = this->vec.begin() + 1; it != this->vec.end(); it++)
 	{
-		for (std::vector<int>::iterator it2 = it + 1; it2 != this->vec.end(); it2++)
-		{
-			currentDistance = abs(*it2 - *it);
-			if (currentDistance < shortestDistance)
-				shortestDistance = currentDistance;
-		}
+		currentDistance = *it - *(it - 1);
+		if (currentDistance < shortestDistance)
+			shortestDistance = currentDistance;
 	}
 	return (shortestDistance);
 }
 
 unsigned int	Span::longestSpan(void)
 {
-	unsigned int	longestDistance = 0;
-	unsigned int	currentDistance;
-
 	if (this->vec.size() < 2)
 		throw std::range_error("There is not enough elements to calculate span");
-	for (std::vector<int>::iterator it = this->vec.begin(); it != this->vec.end(); it++)
-	{
-		for (std::vector<int>::iterator it2 = it + 1; it2 != this->vec.end(); it2++)
-		{
-			currentDistance = abs(*it2 - *it);
-			if (currentDistance > longestDistance)
-				longestDistance = currentDistance;
-		}
-	}
-	return (longestDistance);
+	return (*max_element(this->vec.begin(), this->vec.end()) - *min_element(this->vec.begin(), this->vec.end()));
 }
